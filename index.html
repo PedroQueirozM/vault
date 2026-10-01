@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault - Catálogo e Diário de Jogos</title>
+
+    <!-- Favicons e Ícones da Marca -->
+    <link rel="shortcut icon" href="assets/img/png/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/png/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/png/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/png/apple-touch-icon.png">
+
+    <!-- Fontes do Google: Poppins (Títulos) e Manrope (Secundária/Corpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Identificação do Sistema e Navegação Principal -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="brand">
+                <a href="index.html" class="logo" title="Vault — Início">
+                    <img src="assets/img/png/vault-logo-horizontal-dark.png" alt="Vault Logo" class="brand-logo">
+                    <h1 class="visually-hidden">Vault</h1>
+                </a>
+            </div>
+
+            <!-- Navegação: Descobrir, Jogos e Minha Lista -->
+            <nav class="main-nav" aria-label="Navegação Principal">
+                <ul>
+                    <li><a href="#descobrir" class="nav-link active">Descobrir</a></li>
+                    <li><a href="#jogos" class="nav-link">Jogos</a></li>
+                    <li><a href="#minha-lista" class="nav-link">Minha Lista</a></li>
+                </ul>
+            </nav>
+
+            <!-- Ações: Barra de Pesquisa e Ícone de Perfil -->
+            <div class="header-actions">
+                <form class="header-search-form" onsubmit="return false;" role="search">
+                    <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7.5" stroke="currentColor" stroke-width="1.8" fill="none" />
+                        <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                    <input type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos">
+                </form>
+
+                <a href="#perfil" class="profile-link" aria-label="Perfil do Usuário" title="Meu Perfil">
+                    <div class="profile-avatar">
+                        <svg viewBox="0 0 24 24" class="profile-icon" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4.2" stroke="currentColor" stroke-width="1.8" fill="none" />
+                            <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Controles do Catálogo: Pesquisa, Filtro e Ordenação -->
+        <section class="controls-section" aria-labelledby="controls-heading">
+            <h2 id="controls-heading" class="visually-hidden">Filtros e Pesquisa do Catálogo</h2>
+            
+            <form class="controls-form" onsubmit="return false;">
+                <!-- Campo de Pesquisa -->
+                <div class="form-group search-group">
+                    <label for="search-input">Buscar Jogo</label>
+                    <input type="search" id="search-input" name="search" placeholder="Digite o nome do jogo...">
+                </div>
+
+                <div class="filters-group">
+                    <!-- Filtro por Gênero -->
+                    <div class="form-group">
+                        <label for="filter-genre">Gênero</label>
+                        <select id="filter-genre" name="genre">
+                            <option value="">Todos os gêneros</option>
+                            <option value="rpg">RPG</option>
+                            <option value="acao">Ação / Aventura</option>
+                            <option value="metroidvania">Metroidvania</option>
+                            <option value="roguelike">Roguelike</option>
+                            <option value="estrategia">Estratégia</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro por Status -->
+                    <div class="form-group">
+                        <label for="filter-status">Status</label>
+                        <select id="filter-status" name="status">
+                            <option value="">Todos os status</option>
+                            <option value="finalizado">Finalizado</option>
+                            <option value="em-progresso">Em Progresso</option>
+                            <option value="wishlist">Wishlist</option>
+                        </select>
+                    </div>
+
+                    <!-- Ordenação -->
+                    <div class="form-group">
+                        <label for="sort-order">Ordenar por</label>
+                        <select id="sort-order" name="sort">
+                            <option value="rating-desc">Melhor Avaliados</option>
+                            <option value="release-desc">Mais Recentes</option>
+                            <option value="title-asc">Título (A-Z)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group btn-filter-container">
+                        <button type="button" class="btn btn-secondary">Filtrar</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Visualização dos Itens Cadastrados (Grid do Catálogo) -->
+        <section class="catalog-section" aria-labelledby="catalog-title">
+            <div class="catalog-header">
+                <div>
+                    <h2 id="catalog-title">Catálogo de Jogos</h2>
+                    <p class="section-subtitle">Explore sua coleção, notas e histórico de jogatina</p>
+                </div>
+                <span class="badge-count">6 jogos exibidos</span>
+            </div>
+
+            <div class="games-grid">
+                <!-- Item 1: Elden Ring (Finalizado) -->
+                <article class="game-card">
+                    <figure class="card-cover">
+                        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/YMUoJUYNX0xWk6eTKuZLr5Iw.jpg" alt="Capa ilustrativa de Elden Ring">
+                        
+                        <!-- Ícone de Status Circular: Finalizado (Check) -->
+                        <div class="status-circle status-finalizado" title="Status: Finalizado" aria-label="Status: Finalizado">
+                            <svg viewBox="0 0 24 24" class="status-icon" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10.5" class="circle-outline" />
+                                <polyline points="8 12.5 11 15.5 16 9" class="icon-path" />
+                            </svg>
+                        </div>
+                    </figure>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3 class="game-title">Elden Ring</h3>
+                            <span class="release-year">2022</span>
+                        </div>
+                        <p class="game-info">FromSoftware • RPG de Ação</p>
+
+                        <!-- Avaliação: Formato Simplificado por padrão, Completo no Hover -->
+                        <div class="rating-box" aria-label="Avaliação: 4.9 de 5">
+                            <span class="rating-simplified"><span class="star-icon">★</span> 4.9</span>
+                            <div class="rating-expanded">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.9 / 5.0</span>
+                            </div>
+                        </div>
+
+                        <!-- Descrição / Sinopse: Visível apenas no Hover -->
+                        <p class="game-description">
+                            Uma jornada épica pelas Terras Intermédias para restaurar o Anel Prístino e ascender como Lorde Prístino.
+                        </p>
+                    </div>
+
+                    <!-- Ações do Card: Visíveis apenas no Hover -->
+                    <footer class="card-actions">
+                        <button type="button" class="btn btn-action btn-details">Ver detalhes</button>
+                        <button type="button" class="btn btn-action btn-edit">Editar</button>
+                        <button type="button" class="btn btn-action btn-delete">Excluir</button>
+                    </footer>
+                </article>
+
+                <!-- Item 2: Baldur's Gate 3 (Em Progresso) -->
+                <article class="game-card">
+                    <figure class="card-cover">
+                        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202308/1519/95cce955dc59d04e2ea5ab624a823ace14e9c5f7e24dfb8f.png" alt="Capa ilustrativa de Baldur's Gate 3">
+                        
+                        <!-- Ícone de Status Circular: Em Progresso (Play) -->
+                        <div class="status-circle status-progresso" title="Status: Em Progresso" aria-label="Status: Em Progresso">
+                            <svg viewBox="0 0 24 24" class="status-icon" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10.5" class="circle-outline" />
+                                <polygon points="10 8 16 12 10 16" class="icon-fill" />
+                            </svg>
+                        </div>
+                    </figure>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3 class="game-title">Baldur's Gate 3</h3>
+                            <span class="release-year">2023</span>
+                        </div>
+                        <p class="game-info">Larian Studios • RPG Tático</p>
+
+                        <div class="rating-box" aria-label="Avaliação: 4.8 de 5">
+                            <span class="rating-simplified"><span class="star-icon">★</span> 4.8</span>
+                            <div class="rating-expanded">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.8 / 5.0</span>
+                            </div>
+                        </div>
+
+                        <p class="game-description">
+                            Reúna seu grupo e retorne aos Reinos Esquecidos em uma história de fraternidade, traição e sacrifício.
+                        </p>
+                    </div>
+
+                    <footer class="card-actions">
+                        <button type="button" class="btn btn-action btn-details">Ver detalhes</button>
+                        <button type="button" class="btn btn-action btn-edit">Editar</button>
+                        <button type="button" class="btn btn-action btn-delete">Excluir</button>
+                    </footer>
+                </article>
+
+                <!-- Item 3: Cyberpunk 2077 (Finalizado) -->
+                <article class="game-card">
+                    <figure class="card-cover">
+                        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202111/3013/UjQ1pWQiHwymgQQ6q4pWQkMC.png" alt="Capa ilustrativa de Cyberpunk 2077">
+                        
+                        <!-- Ícone de Status Circular: Finalizado (Check) -->
+                        <div class="status-circle status-finalizado" title="Status: Finalizado" aria-label="Status: Finalizado">
+                            <svg viewBox="0 0 24 24" class="status-icon" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10.5" class="circle-outline" />
+                                <polyline points="8 12.5 11 15.5 16 9" class="icon-path" />
+                            </svg>
+                        </div>
+                    </figure>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3 class="game-title">Cyberpunk 2077</h3>
+                            <span class="release-year">2020</span>
+                        </div>
+                        <p class="game-info">CD Projekt RED • RPG / Ação</p>
+
+                        <div class="rating-box" aria-label="Avaliação: 4.3 de 5">
+                            <span class="rating-simplified"><span class="star-icon">★</span> 4.3</span>
+                            <div class="rating-expanded">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-score">4.3 / 5.0</span>
+                            </div>
+                        </div>
+
+                        <p class="game-description">
+                            Um RPG de ação em mundo aberto ambientado em Night City, uma megalópole obcecada por poder, glamour e biochips.
+                        </p>
+                    </div>
+
+                    <footer class="card-actions">
+                        <button type="button" class="btn btn-action btn-details">Ver detalhes</button>
+                        <button type="button" class="btn btn-action btn-edit">Editar</button>
+                        <button type="button" class="btn btn-action btn-delete">Excluir</button>
+                    </footer>
+                </article>
+
+                <!-- Item 4: Hollow Knight: Silksong (Wishlist) -->
+                <article class="game-card">
+                    <figure class="card-cover">
+                        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202508/2503/9396dc04cc0161e5a17f8775402f2c3afdcb5d8043a7ebf8.png" alt="Capa ilustrativa de Hollow Knight Silksong">
+                        
+                        <!-- Ícone de Status Circular: Wishlist (Bookmark) -->
+                        <div class="status-circle status-wishlist" title="Status: Wishlist" aria-label="Status: Wishlist">
+                            <svg viewBox="0 0 24 24" class="status-icon" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10.5" class="circle-outline" />
+                                <path d="M9 7.5h6a1 1 0 0 1 1 1v9l-4-2.5-4 2.5v-9a1 1 0 0 1 1-1z" class="icon-path" />
+                            </svg>
+                        </div>
+                    </figure>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3 class="game-title">Hollow Knight: Silksong</h3>
+                            <span class="release-year">Em breve</span>
+                        </div>
+                        <p class="game-info">Team Cherry • Metroidvania</p>
+
+                        <div class="rating-box" aria-label="Sem avaliação">
+                            <span class="rating-simplified text-muted"><span class="star-icon">★</span> —</span>
+                            <div class="rating-expanded">
+                                <span class="stars text-muted">☆☆☆☆☆</span>
+                                <span class="rating-score text-muted">Sem avaliação</span>
+                            </div>
+                        </div>
+
+                        <p class="game-description">
+                            Jogue como Hornet, princesa e protetora de Hallownest, em uma aventura por um reino governado pela seda e música.
+                        </p>
+                    </div>
+
+                    <footer class="card-actions">
+                        <button type="button" class="btn btn-action btn-details">Ver detalhes</button>
+                        <button type="button" class="btn btn-action btn-edit">Editar</button>
+                        <button type="button" class="btn btn-action btn-delete">Excluir</button>
+                    </footer>
+                </article>
+
+                <!-- Item 5: The Witcher 3: Wild Hunt (Finalizado) -->
+                <article class="game-card">
+                    <figure class="card-cover">
+                        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202211/0711/IW5r8hLVZzf0ApOyiOuRnKUe.png" alt="Capa ilustrativa de The Witcher 3">
+                        
+                        <!-- Ícone de Status Circular: Finalizado (Check) -->
+                        <div class="status-circle status-finalizado" title="Status: Finalizado" aria-label="Status: Finalizado">
+                            <svg viewBox="0 0 24 24" class="status-icon" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10.5" class="circle-outline" />
+                                <polyline points="8 12.5 11 15.5 16 9" class="icon-path" />
+                            </svg>
+                        </div>
+                    </figure>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3 class="game-title">The Witcher 3: Wild Hunt</h3>
+                            <span class="release-year">2015</span>
+                        </div>
+                        <p class="game-info">CD Projekt RED • RPG de Ação</p>
+
+                        <div class="rating-box" aria-label="Avaliação: 5.0 de 5">
+                            <span class="rating-simplified"><span class="star-icon">★</span> 5.0</span>
+                            <div class="rating-expanded">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">5.0 / 5.0</span>
+                            </div>
+                        </div>
+
+                        <p class="game-description">
+                            Geralt de Rívia é um caçador de monstros em busca de Ciri, a Criança da Profecia, perseguida pela temível Caçada Selvagem.
+                        </p>
+                    </div>
+
+                    <footer class="card-actions">
+                        <button type="button" class="btn btn-action btn-details">Ver detalhes</button>
+                        <button type="button" class="btn btn-action btn-edit">Editar</button>
+                        <button type="button" class="btn btn-action btn-delete">Excluir</button>
+                    </footer>
+                </article>
+
+                <!-- Item 6: Hades II (Em Progresso) -->
+                <article class="game-card">
+                    <figure class="card-cover">
+                        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202603/2506/93f66b17d66159f2a06f2f001b0e28cb485b524c9204797b.png" alt="Capa ilustrativa de Hades II">
+                        
+                        <!-- Ícone de Status Circular: Em Progresso (Play) -->
+                        <div class="status-circle status-progresso" title="Status: Em Progresso" aria-label="Status: Em Progresso">
+                            <svg viewBox="0 0 24 24" class="status-icon" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10.5" class="circle-outline" />
+                                <polygon points="10 8 16 12 10 16" class="icon-fill" />
+                            </svg>
+                        </div>
+                    </figure>
+
+                    <div class="card-body">
+                        <div class="title-row">
+                            <h3 class="game-title">Hades II</h3>
+                            <span class="release-year">2024</span>
+                        </div>
+                        <p class="game-info">Supergiant Games • Roguelike</p>
+
+                        <div class="rating-box" aria-label="Avaliação: 4.7 de 5">
+                            <span class="rating-simplified"><span class="star-icon">★</span> 4.7</span>
+                            <div class="rating-expanded">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.7 / 5.0</span>
+                            </div>
+                        </div>
+
+                        <p class="game-description">
+                            Batalhe além do submundo como Melinoë, Princesa do Submundo e irmã de Zagreus, enfrentando o Titã do Tempo.
+                        </p>
+                    </div>
+
+                    <footer class="card-actions">
+                        <button type="button" class="btn btn-action btn-details">Ver detalhes</button>
+                        <button type="button" class="btn btn-action btn-edit">Editar</button>
+                        <button type="button" class="btn btn-action btn-delete">Excluir</button>
+                    </footer>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé Semântico -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <a href="index.html" class="footer-logo-link" title="Voltar ao início">
+                <img src="assets/img/png/vault-symbol-tritone-green.png" alt="Símbolo Vault" class="footer-logo">
+            </a>
+            <p>&copy; 2026 <strong>Vault</strong> — Plataforma de Catálogo e Avaliação de Jogos.</p>
+            <p class="footer-meta">Etapa 1: Estrutura HTML Semântica e Interface Inicial do Catálogo.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
